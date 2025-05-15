@@ -21,7 +21,7 @@ To use **Theme Rename CLI**, you need to create a `themerename.json` file in the
     "Author": "John Doe",
     "AuthorEmail": "john.doe@example.com",
     "AuthorUri": "https://example.com",
-    "Year: "2025"
+    "Year": "2025"
   },
   "to": {
     "Name": "NewTheme",
@@ -31,7 +31,7 @@ To use **Theme Rename CLI**, you need to create a `themerename.json` file in the
     "Author": "Jane Smith",
     "AuthorEmail": "jane.smith@example.com",
     "AuthorUri": "https://example.com",
-    "Year: "2025"
+    "Year": "2025"
   }
 }
 
