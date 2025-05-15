@@ -5,12 +5,20 @@ import path from "path";
 const themeRoot = process.cwd();
 
 /**
- * Aligns header fields with tab spacing.
+ * Right-aligns the tag to match the longest one in DocBlocks.
  */
-const padHeader = (field) => {
-	const maxLength = 14; // Maximum length for headers (e.g., "Requires PHP")
-	return field.padEnd(maxLength, ' ');
-};
+const padRight = (tag, maxLength) => tag.padEnd(maxLength);
+
+/**
+ * Maximum length for alignment in DocBlocks (`@license` is the longest here)
+ */
+const maxTagLength = Math.max(
+	"@package".length,
+	"@author".length,
+	"@copyright".length,
+	"@license".length,
+	"@link".length
+);
 
 const doReplacePhp = async (conf, ignoreFile) => {
 	return {
@@ -25,8 +33,7 @@ const doReplacePhp = async (conf, ignoreFile) => {
 			`${themeRoot}/**/*.php`,
 			`${themeRoot}/*.js`,
 			`${themeRoot}/webpack.*.js`,
-			`${themeRoot}/public/views/**/*.php`,
-			`${themeRoot}/style.css`  // ✅ Include style.css
+			`${themeRoot}/public/views/**/*.php`
 		],
 		from: [
 			// ✅ Namespace Replacement
@@ -47,8 +54,38 @@ const doReplacePhp = async (conf, ignoreFile) => {
 			new RegExp(`@copyright\\s+([0-9]{4})\\s+${conf.from.Author}`, "g"),
 			new RegExp(`©\\s+([0-9]{4})\\s+${conf.from.Author}`, "g"),
 			// ✅ If there is no year, just the author
-			new RegExp(`©\\s+${conf.from.Author}`, "g"),
-			// ✅ WordPress style.css replacements
+			new RegExp(`©\\s+${conf.from.Author}`, "g")
+		],
+		to: [
+			// ✅ Namespace Replacement
+			`namespace ${casex(conf.to.Name, 'CaSe')}`,
+			// ✅ Package Replacement with alignment
+			`${padRight("@package", maxTagLength)} ${casex(conf.to.Name, 'CaSe')}`,
+			// ✅ Variable Replacement
+			`\$${casex(conf.to.Name.toLowerCase(), 'ca_se')}`,
+			// ✅ Path Replacement
+			`${casex(conf.to.Name.toLowerCase(), 'ca_se')}/`,
+			// ✅ URI Replacement
+			conf.to.Uri,
+			conf.to.AuthorUri,
+			// ✅ Author Information
+			conf.to.AuthorEmail,
+			conf.to.Author,
+			// ✅ Copyright Replacement
+			`${padRight("@copyright", maxTagLength)} ${conf.to.Year} ${conf.from.Author}`,
+			`© ${conf.to.Year} ${conf.from.Author}`,
+			`© ${conf.to.Year} ${conf.from.Author}`
+		]
+	};
+};
+
+const doReplaceStyleCss = async (conf) => {
+	return {
+		allowEmptyPaths: true,
+		files: [
+			`${themeRoot}/style.css`
+		],
+		from: [
 			new RegExp(`(Theme Name:\\s+).*`, "g"),
 			new RegExp(`(Theme URI:\\s+).*`, "g"),
 			new RegExp(`(Author:\\s+).*`, "g"),
@@ -63,37 +100,18 @@ const doReplacePhp = async (conf, ignoreFile) => {
 			new RegExp(`(Text Domain:\\s+).*`, "g")
 		],
 		to: [
-			// ✅ Namespace Replacement
-			`namespace ${casex(conf.to.Name, 'CaSe')}`,
-			// ✅ Package Replacement with alignment
-			`@package ${casex(conf.to.Name, 'CaSe')}`,
-			// ✅ Variable Replacement
-			`\$${casex(conf.to.Name.toLowerCase(), 'ca_se')}`,
-			// ✅ Path Replacement
-			`${casex(conf.to.Name.toLowerCase(), 'ca_se')}/`,
-			// ✅ URI Replacement
-			conf.to.Uri,
-			conf.to.AuthorUri,
-			// ✅ Author Information
-			conf.to.AuthorEmail,
-			conf.to.Author,
-			// ✅ Copyright Replacement
-			`@copyright ${conf.to.Year} ${conf.from.Author}`,
-			`© ${conf.to.Year} ${conf.from.Author}`,
-			`© ${conf.to.Year} ${conf.from.Author}`,
-			// ✅ WordPress style.css replacements with alignment
-			`${padHeader("Theme Name:")}\t${casex(conf.to.Name, 'CaSe')}`,
-			`${padHeader("Theme URI:")}\t${conf.to.Uri}`,
-			`${padHeader("Author:")}\t${conf.to.Author}`,
-			`${padHeader("Author URI:")}\t${conf.to.AuthorUri}`,
-			`${padHeader("Description:")}\t${conf.to.Description}`,
-			`${padHeader("Tags:")}\tgrid-layout, one-column, two-columns, custom-background, custom-colors, custom-header, custom-logo, custom-menu, featured-images, footer-widgets, post-formats, sticky-post, theme-options, threaded-comments, translation-ready, blog`,
-			`${padHeader("Requires CP:")}\t2.0`,
-			`${padHeader("Requires PHP:")}\t7.4`,
-			`${padHeader("Version:")}\t1.0.0`,
-			`${padHeader("License:")}\tGNU General Public License v2 or later`,
-			`${padHeader("License URI:")}\thttps://www.gnu.org/licenses/gpl-2.0.html`,
-			`${padHeader("Text Domain:")}\t${casex(conf.to.Name, 'ca-se').toLowerCase()}`
+			`Theme Name:     ${casex(conf.to.Name, 'CaSe')}`,
+			`Theme URI:      ${conf.to.Uri}`,
+			`Author:         ${conf.to.Author}`,
+			`Author URI:     ${conf.to.AuthorUri}`,
+			`Description:    ${conf.to.Description}`,
+			`Tags:           grid-layout, one-column, two-columns, custom-background, custom-colors, custom-header, custom-logo, custom-menu, featured-images, footer-widgets, post-formats, sticky-post, theme-options, threaded-comments, translation-ready, blog`,
+			`Requires CP:    2.0`,
+			`Requires PHP:   7.4`,
+			`Version:        1.0.0`,
+			`License:        GNU General Public License v2 or later`,
+			`License URI:    https://www.gnu.org/licenses/gpl-2.0.html`,
+			`Text Domain:    ${casex(conf.to.Name, 'ca-se').toLowerCase()}`
 		]
 	};
 };
@@ -101,6 +119,9 @@ const doReplacePhp = async (conf, ignoreFile) => {
 export default async (config, ignoreFile) => {
 	const replacePhp = await doReplacePhp(config, ignoreFile);
 	await replace(replacePhp);
+
+	const replaceStyleCss = await doReplaceStyleCss(config);
+	await replace(replaceStyleCss);
 
 	console.log("\nAll Files Updated Successfully.");
 };
