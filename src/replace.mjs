@@ -15,7 +15,11 @@ const doReplacePhp = async (conf, ignoreFile) => {
 			"public/views/**/*",    // ✅ Ignoring public/views directory
 			ignoreFile
 		],
-		files: [`${themeRoot}/**/*.php`],
+		files: [
+			`${themeRoot}/**/*.php`,
+			`${themeRoot}/*.js`,                // ✅ Root level .js files (like webpack.mix.js)
+			`${themeRoot}/webpack.*.js`,        // ✅ webpack.*.js specifically
+		],
 		from: [
 			// ✅ Namespace Replacement
 			new RegExp(`namespace ${casex(conf.from.Name, 'CaSe')}`, "g"),
@@ -70,7 +74,12 @@ const doReplaceAssets = async (conf, ignoreFile) => {
 			"public/views/**/*",    // ✅ Ignoring public/views directory
 			ignoreFile
 		],
-		files: [`${themeRoot}/**/*.js`, `${themeRoot}/**/*.scss`],
+		files: [
+			`${themeRoot}/**/*.js`,
+			`${themeRoot}/**/*.scss`,
+			`${themeRoot}/webpack.*.js`,       // ✅ webpack.*.js specifically
+			`${themeRoot}/*.js`                // ✅ Root-level JS files
+		],
 		from: [
 			// ✅ Author Information
 			new RegExp(conf.from.AuthorEmail, "g"),
