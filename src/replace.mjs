@@ -31,9 +31,11 @@ const doReplacePhp = async (conf, ignoreFile) => {
 			// ✅ Author Information
 			new RegExp(conf.from.AuthorEmail, "g"),
 			new RegExp(conf.from.Author, "g"),
-			// ✅ Copyright Replacement
+			// ✅ Copyright Replacement (Match any year)
 			new RegExp(`@copyright\\s+([0-9]{4})\\s+${conf.from.Author}`, "g"),
-			new RegExp(`©\\s+([0-9]{4})\\s+${conf.from.Author}`, "g")
+			new RegExp(`©\\s+([0-9]{4})\\s+${conf.from.Author}`, "g"),
+			// ✅ If there is no year, just the author
+			new RegExp(`©\\s+${conf.from.Author}`, "g")
 		],
 		to: [
 			// ✅ Namespace Replacement
@@ -52,6 +54,7 @@ const doReplacePhp = async (conf, ignoreFile) => {
 			conf.to.Author,
 			// ✅ Copyright Replacement
 			`@copyright ${conf.to.Year} ${conf.from.Author}`,
+			`© ${conf.to.Year} ${conf.from.Author}`,
 			`© ${conf.to.Year} ${conf.from.Author}`
 		]
 	};
@@ -75,14 +78,20 @@ const doReplaceAssets = async (conf, ignoreFile) => {
 			new RegExp(conf.from.Uri, "g"),
 			// ✅ Name Replacement
 			new RegExp(casex(conf.from.Name, 'CaSe'), "g"),
-			new RegExp(`'${casex(conf.from.Name, 'ca-se')}'`, "g")
+			new RegExp(`'${casex(conf.from.Name, 'ca-se')}'`, "g"),
+			// ✅ Copyright Replacement (Match any year)
+			new RegExp(`©\\s+([0-9]{4})\\s+${conf.from.Author}`, "g"),
+			// ✅ If there is no year, just the author
+			new RegExp(`©\\s+${conf.from.Author}`, "g")
 		],
 		to: [
 			conf.to.AuthorEmail,
 			conf.to.Author,
 			conf.to.Uri,
 			casex(conf.to.Name, 'CaSe'),
-			`'${casex(conf.to.Name.toLowerCase(), 'ca-se')}'`
+			`'${casex(conf.to.Name.toLowerCase(), 'ca-se')}'`,
+			`© ${conf.to.Year} ${conf.from.Author}`,
+			`© ${conf.to.Year} ${conf.from.Author}`
 		]
 	};
 };
