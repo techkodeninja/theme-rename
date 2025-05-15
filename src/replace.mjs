@@ -15,7 +15,9 @@ const padRight = ( tag, maxLength ) => tag.padEnd( maxLength );
 const maxTagLength = Math.max(
 	"@package".length,
 	"@license".length,
-	"@link".length
+	"@link".length,
+	"@copyright".length,
+	"@author".length
 );
 
 const doReplacePhp = async ( conf, ignoreFile ) => {
@@ -36,52 +38,52 @@ const doReplacePhp = async ( conf, ignoreFile ) => {
 		from : [
 			// ✅ Namespace Replacement
 			new RegExp( `namespace ${casex( conf.from.Name, 'CaSe' )}`, "g" ),
-			
+
 			// ✅ Package Replacement (align with other tags)
 			new RegExp( `(@package\\s+)(\\s*)${casex( conf.from.Name, 'CaSe' )}`, "g" ),
-			
+
 			// ✅ Variable Replacement
 			new RegExp( `\\$${casex( conf.from.Name.toLowerCase(), 'ca_se' )}`, "g" ),
-			
+
 			// ✅ Path Replacement
 			new RegExp( `${casex( conf.from.Name.toLowerCase(), 'ca_se' )}/`, "g" ),
-			
+
 			// ✅ URI Replacement
 			new RegExp( conf.from.Uri, "g" ),
 			new RegExp( conf.from.AuthorUri, "g" ),
-			
+
 			// ✅ Author Information
 			new RegExp( conf.from.AuthorEmail, "g" ),
 			new RegExp( conf.from.Author, "g" ),
-			
+
 			// ✅ Copyright Replacement (Match any year)
 			new RegExp( `@copyright\\s+([0-9]{4})\\s+${conf.from.Author}`, "g" ),
 			new RegExp( `©\\s+([0-9]{4})\\s+${conf.from.Author}`, "g" ),
-			
+
 			// ✅ If there is no year, just the author
 			new RegExp( `©\\s+${conf.from.Author}`, "g" )
 		],
 		to : [
 			// ✅ Namespace Replacement
 			`namespace ${casex( conf.to.Name, 'CaSe' )}`,
-			
+
 			// ✅ Package Replacement with alignment
 			`${padRight( "@package", maxTagLength )} ${casex( conf.to.Name, 'CaSe' )}`,
-			
+
 			// ✅ Variable Replacement
 			`\$${casex( conf.to.Name.toLowerCase(), 'ca_se' )}`,
-			
+
 			// ✅ Path Replacement
 			`${casex( conf.to.Name.toLowerCase(), 'ca_se' )}/`,
-			
+
 			// ✅ URI Replacement
 			conf.to.Uri,
 			conf.to.AuthorUri,
-			
+
 			// ✅ Author Information
 			conf.to.AuthorEmail,
 			conf.to.Author,
-			
+
 			// ✅ Copyright Replacement
 			`${padRight( "@copyright", maxTagLength )} ${conf.to.Year} ${conf.from.Author}`,
 			`© ${conf.to.Year} ${conf.from.Author}`,
