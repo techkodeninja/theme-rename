@@ -20,7 +20,8 @@ To use **Theme Rename CLI**, you need to create a `themerename.json` file in the
     "Uri": "https://example.com/themes/backdrop",
     "Author": "Benjamin Lu",
     "AuthorEmail": "benlumia007@gmail.com",
-    "AuthorUri": "https://example.com"
+    "AuthorUri": "https://example.com",
+    "Year": "2024"
   },
   "to": {
     "Name": "Superman",
@@ -29,7 +30,8 @@ To use **Theme Rename CLI**, you need to create a `themerename.json` file in the
     "Uri": "https://example.com/themes/superman",
     "Author": "Benjamin Lu",
     "AuthorEmail": "benlumia007@gmail.com",
-    "AuthorUri": "https://example.com"
+    "AuthorUri": "https://example.com",
+    "Year: "2025"
   }
 }
 
