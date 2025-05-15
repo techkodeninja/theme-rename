@@ -5,19 +5,26 @@ import path from "path";
 const themeRoot = process.cwd();
 
 /**
- * Right-aligns the tag to match the longest one (e.g., `@copyright`)
+ * Right-aligns the tag to match the longest one (e.g., `Theme URI`)
  */
 const padRight = (tag, maxLength) => tag.padEnd(maxLength);
 
 /**
- * Maximum length for alignment (`@license` is the longest here)
+ * Maximum length for alignment (`Requires PHP` is the longest here)
  */
 const maxTagLength = Math.max(
-	"@package".length,
-	"@author".length,
-	"@copyright".length,
-	"@license".length,
-	"@link".length
+	"Theme Name".length,
+	"Theme URI".length,
+	"Author".length,
+	"Author URI".length,
+	"Description".length,
+	"License".length,
+	"License URI".length,
+	"Tags".length,
+	"Requires CP".length,
+	"Requires PHP".length,
+	"Version".length,
+	"Text Domain".length
 );
 
 const doReplacePhp = async (conf, ignoreFile) => {
@@ -58,9 +65,13 @@ const doReplacePhp = async (conf, ignoreFile) => {
 			new RegExp(`©\\s+${conf.from.Author}`, "g"),
 			// ✅ WordPress style.css replacements
 			new RegExp(`(Theme Name:\\s+).*`, "g"),
+			new RegExp(`(Theme URI:\\s+).*`, "g"),
 			new RegExp(`(Author:\\s+).*`, "g"),
 			new RegExp(`(Author URI:\\s+).*`, "g"),
 			new RegExp(`(Description:\\s+).*`, "g"),
+			new RegExp(`(Tags:\\s+).*`, "g"),
+			new RegExp(`(Requires CP:\\s+).*`, "g"),
+			new RegExp(`(Requires PHP:\\s+).*`, "g"),
 			new RegExp(`(Version:\\s+).*`, "g"),
 			new RegExp(`(License:\\s+).*`, "g"),
 			new RegExp(`(License URI:\\s+).*`, "g"),
@@ -70,37 +81,4 @@ const doReplacePhp = async (conf, ignoreFile) => {
 			// ✅ Namespace Replacement
 			`namespace ${casex(conf.to.Name, 'CaSe')}`,
 			// ✅ Package Replacement with alignment
-			`${padRight("@package", maxTagLength)} ${casex(conf.to.Name, 'CaSe')}`,
-			// ✅ Variable Replacement
-			`\$${casex(conf.to.Name.toLowerCase(), 'ca_se')}`,
-			// ✅ Path Replacement
-			`${casex(conf.to.Name.toLowerCase(), 'ca_se')}/`,
-			// ✅ URI Replacement
-			conf.to.Uri,
-			conf.to.AuthorUri,
-			// ✅ Author Information
-			conf.to.AuthorEmail,
-			conf.to.Author,
-			// ✅ Copyright Replacement
-			`${padRight("@copyright", maxTagLength)} ${conf.to.Year} ${conf.from.Author}`,
-			`© ${conf.to.Year} ${conf.from.Author}`,
-			`© ${conf.to.Year} ${conf.from.Author}`,
-			// ✅ WordPress style.css replacements
-			`Theme Name: ${casex(conf.to.Name, 'CaSe')}`,
-			`Author: ${conf.to.Author}`,
-			`Author URI: ${conf.to.AuthorUri}`,
-			`Description: ${conf.to.Description}`,
-			`Version: 1.0.0`,
-			`License: GNU General Public License v2 or later`,
-			`License URI: https://www.gnu.org/licenses/gpl-2.0.html`,
-			`Text Domain: ${casex(conf.to.Name, 'ca-se').toLowerCase()}`
-		]
-	};
-};
-
-export default async (config, ignoreFile) => {
-	const replacePhp = await doReplacePhp(config, ignoreFile);
-	await replace(replacePhp);
-
-	console.log("\nAll Files Updated Successfully.");
-};
+			`${padRight("@package", maxTagLength)} ${casex(conf.to.Name, '
