@@ -91,12 +91,6 @@ const doReplaceStyleCss = async (conf) => {
 			new RegExp(`(Author:\\s+).*`, "g"),
 			new RegExp(`(Author URI:\\s+).*`, "g"),
 			new RegExp(`(Description:\\s+).*`, "g"),
-			new RegExp(`(Tags:\\s+).*`, "g"),
-			new RegExp(`(Requires CP:\\s+).*`, "g"),
-			new RegExp(`(Requires PHP:\\s+).*`, "g"),
-			new RegExp(`(Version:\\s+).*`, "g"),
-			new RegExp(`(License:\\s+).*`, "g"),
-			new RegExp(`(License URI:\\s+).*`, "g"),
 			new RegExp(`(Text Domain:\\s+).*`, "g")
 		],
 		to: [
@@ -105,12 +99,6 @@ const doReplaceStyleCss = async (conf) => {
 			`Author:         ${conf.to.Author}`,
 			`Author URI:     ${conf.to.AuthorUri}`,
 			`Description:    ${conf.to.Description}`,
-			`Tags:           grid-layout, one-column, two-columns, custom-background, custom-colors, custom-header, custom-logo, custom-menu, featured-images, footer-widgets, post-formats, sticky-post, theme-options, threaded-comments, translation-ready, blog`,
-			`Requires CP:    2.0`,
-			`Requires PHP:   7.4`,
-			`Version:        1.0.0`,
-			`License:        GNU General Public License v2 or later`,
-			`License URI:    https://www.gnu.org/licenses/gpl-2.0.html`,
 			`Text Domain:    ${casex(conf.to.Name, 'ca-se').toLowerCase()}`
 		]
 	};
