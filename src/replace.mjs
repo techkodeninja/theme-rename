@@ -5,27 +5,12 @@ import path from "path";
 const themeRoot = process.cwd();
 
 /**
- * Right-aligns the tag to match the longest one (e.g., `@copyright`)
+ * Aligns header fields with tab spacing.
  */
-const padRight = (tag, maxLength) => tag.padEnd(maxLength);
-
-/**
- * Maximum length for alignment (`Requires PHP` is the longest here)
- */
-const maxTagLength = Math.max(
-	"Theme Name".length,
-	"Theme URI".length,
-	"Author".length,
-	"Author URI".length,
-	"Description".length,
-	"License".length,
-	"License URI".length,
-	"Tags".length,
-	"Requires CP".length,
-	"Requires PHP".length,
-	"Version".length,
-	"Text Domain".length
-);
+const padHeader = (field) => {
+	const maxLength = 14; // Maximum length for headers (e.g., "Requires PHP")
+	return field.padEnd(maxLength, ' ');
+};
 
 const doReplacePhp = async (conf, ignoreFile) => {
 	return {
@@ -81,7 +66,7 @@ const doReplacePhp = async (conf, ignoreFile) => {
 			// ✅ Namespace Replacement
 			`namespace ${casex(conf.to.Name, 'CaSe')}`,
 			// ✅ Package Replacement with alignment
-			`${padRight("@package", maxTagLength)} ${casex(conf.to.Name, 'CaSe')}`,
+			`@package ${casex(conf.to.Name, 'CaSe')}`,
 			// ✅ Variable Replacement
 			`\$${casex(conf.to.Name.toLowerCase(), 'ca_se')}`,
 			// ✅ Path Replacement
@@ -93,22 +78,22 @@ const doReplacePhp = async (conf, ignoreFile) => {
 			conf.to.AuthorEmail,
 			conf.to.Author,
 			// ✅ Copyright Replacement
-			`${padRight("@copyright", maxTagLength)} ${conf.to.Year} ${conf.from.Author}`,
+			`@copyright ${conf.to.Year} ${conf.from.Author}`,
 			`© ${conf.to.Year} ${conf.from.Author}`,
 			`© ${conf.to.Year} ${conf.from.Author}`,
 			// ✅ WordPress style.css replacements with alignment
-			`${padRight("Theme Name:", maxTagLength)}\t${casex(conf.to.Name, 'CaSe')}`,
-			`${padRight("Theme URI:", maxTagLength)}\t${conf.to.Uri}`,
-			`${padRight("Author:", maxTagLength)}\t${conf.to.Author}`,
-			`${padRight("Author URI:", maxTagLength)}\t${conf.to.AuthorUri}`,
-			`${padRight("Description:", maxTagLength)}\t${conf.to.Description}`,
-			`${padRight("Tags:", maxTagLength)}\tgrid-layout, one-column, two-columns, custom-background, custom-colors, custom-header, custom-logo, custom-menu, featured-images, footer-widgets, post-formats, sticky-post, theme-options, threaded-comments, translation-ready, blog`,
-			`${padRight("Requires CP:", maxTagLength)}\t2.0`,
-			`${padRight("Requires PHP:", maxTagLength)}\t7.4`,
-			`${padRight("Version:", maxTagLength)}\t1.0.0`,
-			`${padRight("License:", maxTagLength)}\tGNU General Public License v2 or later`,
-			`${padRight("License URI:", maxTagLength)}\thttps://www.gnu.org/licenses/gpl-2.0.html`,
-			`${padRight("Text Domain:", maxTagLength)}\t${casex(conf.to.Name, 'ca-se').toLowerCase()}`
+			`${padHeader("Theme Name:")}\t${casex(conf.to.Name, 'CaSe')}`,
+			`${padHeader("Theme URI:")}\t${conf.to.Uri}`,
+			`${padHeader("Author:")}\t${conf.to.Author}`,
+			`${padHeader("Author URI:")}\t${conf.to.AuthorUri}`,
+			`${padHeader("Description:")}\t${conf.to.Description}`,
+			`${padHeader("Tags:")}\tgrid-layout, one-column, two-columns, custom-background, custom-colors, custom-header, custom-logo, custom-menu, featured-images, footer-widgets, post-formats, sticky-post, theme-options, threaded-comments, translation-ready, blog`,
+			`${padHeader("Requires CP:")}\t2.0`,
+			`${padHeader("Requires PHP:")}\t7.4`,
+			`${padHeader("Version:")}\t1.0.0`,
+			`${padHeader("License:")}\tGNU General Public License v2 or later`,
+			`${padHeader("License URI:")}\thttps://www.gnu.org/licenses/gpl-2.0.html`,
+			`${padHeader("Text Domain:")}\t${casex(conf.to.Name, 'ca-se').toLowerCase()}`
 		]
 	};
 };
