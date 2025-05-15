@@ -17,12 +17,40 @@ const doReplacePhp = async (conf, ignoreFile) => {
 		],
 		files: [`${themeRoot}/**/*.php`],
 		from: [
-			// ✅ Match any year with the author's name
+			// ✅ Namespace Replacement
+			new RegExp(`namespace ${casex(conf.from.Name, 'CaSe')}`, "g"),
+			// ✅ Package Replacement
+			new RegExp(`(@package\\s+)${casex(conf.from.Name, 'CaSe')}`, "g"),
+			// ✅ Variable Replacement
+			new RegExp(`\\$${casex(conf.from.Name.toLowerCase(), 'ca_se')}`, "g"),
+			// ✅ Path Replacement
+			new RegExp(`${casex(conf.from.Name.toLowerCase(), 'ca_se')}/`, "g"),
+			// ✅ URI Replacement
+			new RegExp(conf.from.Uri, "g"),
+			new RegExp(conf.from.AuthorUri, "g"),
+			// ✅ Author Information
+			new RegExp(conf.from.AuthorEmail, "g"),
+			new RegExp(conf.from.Author, "g"),
+			// ✅ Copyright Replacement
 			new RegExp(`@copyright\\s+([0-9]{4})\\s+${conf.from.Author}`, "g"),
 			new RegExp(`©\\s+([0-9]{4})\\s+${conf.from.Author}`, "g")
 		],
 		to: [
-			// ✅ Replace only the year with the new one from JSON
+			// ✅ Namespace Replacement
+			`namespace ${casex(conf.to.Name, 'CaSe')}`,
+			// ✅ Package Replacement
+			`@package ${casex(conf.to.Name, 'CaSe')}`,
+			// ✅ Variable Replacement
+			`\$${casex(conf.to.Name.toLowerCase(), 'ca_se')}`,
+			// ✅ Path Replacement
+			`${casex(conf.to.Name.toLowerCase(), 'ca_se')}/`,
+			// ✅ URI Replacement
+			conf.to.Uri,
+			conf.to.AuthorUri,
+			// ✅ Author Information
+			conf.to.AuthorEmail,
+			conf.to.Author,
+			// ✅ Copyright Replacement
 			`@copyright ${conf.to.Year} ${conf.from.Author}`,
 			`© ${conf.to.Year} ${conf.from.Author}`
 		]
@@ -41,10 +69,20 @@ const doReplaceAssets = async (conf, ignoreFile) => {
 		],
 		files: [`${themeRoot}/**/*.js`, `${themeRoot}/**/*.scss`],
 		from: [
-			new RegExp(`©\\s+([0-9]{4})\\s+${conf.from.Author}`, "g")
+			// ✅ Author Information
+			new RegExp(conf.from.AuthorEmail, "g"),
+			new RegExp(conf.from.Author, "g"),
+			new RegExp(conf.from.Uri, "g"),
+			// ✅ Name Replacement
+			new RegExp(casex(conf.from.Name, 'CaSe'), "g"),
+			new RegExp(`'${casex(conf.from.Name, 'ca-se')}'`, "g")
 		],
 		to: [
-			`© ${conf.to.Year} ${conf.from.Author}`
+			conf.to.AuthorEmail,
+			conf.to.Author,
+			conf.to.Uri,
+			casex(conf.to.Name, 'CaSe'),
+			`'${casex(conf.to.Name.toLowerCase(), 'ca-se')}'`
 		]
 	};
 };
@@ -56,5 +94,5 @@ export default async (config, ignoreFile) => {
 	const replaceAssets = await doReplaceAssets(config, ignoreFile);
 	await replace(replaceAssets);
 
-	console.log("\nCreation Year Updated Successfully.");
+	console.log("\nAll Files Updated Successfully.");
 };
