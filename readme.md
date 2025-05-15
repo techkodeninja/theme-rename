@@ -25,7 +25,6 @@ To use **Theme Rename CLI**, you need to create a `themerename.json` file in the
     "Author": "Benjamin Lu",
     "AuthorEmail": "benlumia007@gmail.com",
     "AuthorUri": "https://example.com",
-    "Year": "2025"
   }
 }
 ```
@@ -34,7 +33,6 @@ from: Represents the original theme's information.
 
 to: Represents the new theme's information after the rename.
 
-Year: Optionally set the year for documentation and headers.
 <pre>
 my-theme/
 ├── bin/
