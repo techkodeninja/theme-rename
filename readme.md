@@ -28,3 +28,21 @@ To use **Theme Rename CLI**, you need to create a `themerename.json` file in the
     "Year": "2025"
   }
 }
+```
+## Explanation
+from: Represents the original theme's information.
+
+to: Represents the new theme's information after the rename.
+
+Year: Optionally set the year for documentation and headers.
+<pre>
+my-theme/
+├── bin/
+├── src/
+├── style.css
+├── themerename.json   <--- Place it here
+├── webpack.mix.js
+└── *.php
+</pre>
+<pre>
+run theme-renname
