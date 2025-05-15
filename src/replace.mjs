@@ -5,7 +5,7 @@ import path     from "path";
 const themeRoot = process.cwd();
 
 /**
- * Right-aligns the tag to match the longest one in DocBlocks.
+ * Right-aligns the tag to match the longest one in DocBlocks and `style.css`.
  */
 const padRight = ( tag, maxLength ) => tag.padEnd( maxLength );
 
@@ -18,13 +18,25 @@ const maxTagLength = Math.max(
 	"@link".length
 );
 
+/**
+ * Maximum length for alignment in `style.css`.
+ */
+const maxCssLength = Math.max(
+	"Theme Name:".length,
+	"Theme URI:".length,
+	"Author:".length,
+	"Author URI:".length,
+	"Description:".length,
+	"Text Domain:".length
+);
+
 const doReplacePhp = async ( conf, ignoreFile ) => {
 	return {
 		allowEmptyPaths : true,
 		ignore          : [
-			`vendor/**/*`,
-			`node_modules/**/*`,
-			`.git/**/*`,
+			"vendor/**/*",
+			"node_modules/**/*",
+			".git/**/*",
 			ignoreFile
 		],
 
@@ -111,12 +123,13 @@ const doReplaceStyleCss = async ( conf ) => {
 		],
 
 		to : [
-			`Theme Name:     ${casex( conf.to.Name, 'CaSe' )}`,
-			`Theme URI:      ${conf.to.Uri}`,
-			`Author:         ${conf.to.Author}`,
-			`Author URI:     ${conf.to.AuthorUri}`,
-			`Description:    ${conf.to.Description}`,
-			`Text Domain:    ${casex( conf.to.Name, 'ca-se' ).toLowerCase()}`
+			// ✅ Perfect alignment with padding
+			`${padRight( "Theme Name:", maxCssLength )}   ${casex( conf.to.Name, 'CaSe' )}`,
+			`${padRight( "Theme URI:", maxCssLength )}    ${conf.to.Uri}`,
+			`${padRight( "Author:", maxCssLength )}       ${conf.to.Author}`,
+			`${padRight( "Author URI:", maxCssLength )}   ${conf.to.AuthorUri}`,
+			`${padRight( "Description:", maxCssLength )}  ${conf.to.Description}`,
+			`${padRight( "Text Domain:", maxCssLength )}  ${casex( conf.to.Name, 'ca-se' ).toLowerCase()}`
 		]
 	};
 };
@@ -125,10 +138,10 @@ export default async ( config, ignoreFile ) => {
 	const replacePhp = await doReplacePhp( config, ignoreFile );
 	await replace( replacePhp );
 
-	console.log( "\n\nPHP, JS, and webpack files updated successfully.\n\n" );
+	console.log( "\nAll PHP, JS, and webpack files updated successfully." );
 
 	const replaceStyleCss = await doReplaceStyleCss( config );
 	await replace( replaceStyleCss );
 
-	console.log( "\n\nstyle.css updated successfully.\n\n" );
+	console.log( "\nstyle.css updated successfully." );
 };
