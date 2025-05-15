@@ -1,0 +1,23 @@
+{
+    "name": "theme-rename",
+    "version": "0.0.1",
+    "description": "CLI tool for renaming WordPress themes across all files and configurations.",
+    "main": "index.mjs",
+    "type": "module",
+    "bin": {
+        "theme-rename": "./bin/cli.mjs"
+    },
+    "scripts": {
+        "rename-theme": "node ./bin/cli.mjs"
+    },
+    "dependencies": {
+        "casex": "^3.0.0",
+        "chalk": "^2.4.2",
+        "fs-extra": "^7.0.1",
+        "replace-in-file": "^3.4.3"
+    },
+    "engines": {
+        "node": ">=14"
+    },
+    "enginesStrict": true
+}
