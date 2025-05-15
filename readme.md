@@ -14,26 +14,27 @@ To use **Theme Rename CLI**, you need to create a `themerename.json` file in the
 ```json
 {
   "from": {
-    "Name": "Backdrop",
-    "Description": "Backdrop is a next-generation starter theme designed to help theme authors write elegant, intelligent, and modern code.",
-    "Namespace": "Backdrop",
-    "Uri": "https://example.com/themes/backdrop",
-    "Author": "Benjamin Lu",
-    "AuthorEmail": "benlumia007@gmail.com",
+    "Name": "ExampleTheme",
+    "Description": "ExampleTheme is a modern starter theme built for ClassicPress.",
+    "Namespace": "ExampleTheme",
+    "Uri": "https://example.com/themes/exampletheme",
+    "Author": "John Doe",
+    "AuthorEmail": "john.doe@example.com",
     "AuthorUri": "https://example.com",
-    "Year": "2024"
+    "Year: "2025"
   },
   "to": {
-    "Name": "Superman",
-    "Description": "A supercharged theme built for performance.",
-    "Namespace": "Superman",
-    "Uri": "https://example.com/themes/superman",
-    "Author": "Benjamin Lu",
-    "AuthorEmail": "benlumia007@gmail.com",
+    "Name": "NewTheme",
+    "Description": "NewTheme is a high-performance theme for ClassicPress.",
+    "Namespace": "NewTheme",
+    "Uri": "https://example.com/themes/newtheme",
+    "Author": "Jane Smith",
+    "AuthorEmail": "jane.smith@example.com",
     "AuthorUri": "https://example.com",
     "Year: "2025"
   }
 }
+
 
 ```
 ## Explanation
@@ -57,25 +58,28 @@ theme-renname
 
 This will update PHP DocBlock and style.css header.
 ```
- * @package   Backdrop
- * @author    Benjamin Lu <benlumia007@gmail.com>
- * @copyright 2024 Benjamin Lu
+/**
+ * @package   ExampleTheme
+ * @author    John Doe <john.doe@example.com>
  * @license   https://www.gnu.org/licenses/gpl-2.0.html
- * @link      https://luthemes.com/portfolio/backdrop
+ * @link      https://example.com/themes/exampletheme
+ */
+
  ```
  ```
-/*!
- * Theme Name:   Backdrop
- * Theme URI:    https://luthemes.com/portfolio/backdrop
- * Author:       Benjamin Lu
- * Author URI:   https://luthemes.com
- * Description:  Backdrop is a next-generation starter theme designed to help theme authors write elegant, intelligent, and modern code. It is structured to provide clean, maintainable, and scalable foundations for building high-quality ClassicPress themes.
+/*
+ * Theme Name:   ExampleTheme
+ * Theme URI:    https://example.com/themes/exampletheme
+ * Author:       John Doe
+ * Author URI:   https://example.com
+ * Description:  ExampleTheme is a modern starter theme built for ClassicPress.
  * License:      GNU General Public License v2.0 or later
  * License URI:  https://www.gnu.org/licenses/gpl-2.0.html
  * Tags:         grid-layout, one-column, two-columns, custom-background, custom-colors, custom-header, custom-logo, custom-menu, featured-images, footer-widgets, post-formats, sticky-post, theme-options, threaded-comments, translation-ready, blog
  * Requires CP:  2.0
  * Requires PHP: 7.4
- * Version:      0.0.8
- * Text Domain:  backdrop
+ * Version:      1.0.0
+ * Text Domain:  exampletheme
  */
+
  ```
