@@ -33,7 +33,8 @@ const doReplacePhp = async (conf, ignoreFile) => {
 			`${themeRoot}/**/*.php`,
 			`${themeRoot}/*.js`,
 			`${themeRoot}/webpack.*.js`,
-			`${themeRoot}/public/views/**/*.php`
+			`${themeRoot}/public/views/**/*.php`,
+			`${themeRoot}/style.css`  // ✅ Include style.css
 		],
 		from: [
 			// ✅ Namespace Replacement
@@ -54,7 +55,16 @@ const doReplacePhp = async (conf, ignoreFile) => {
 			new RegExp(`@copyright\\s+([0-9]{4})\\s+${conf.from.Author}`, "g"),
 			new RegExp(`©\\s+([0-9]{4})\\s+${conf.from.Author}`, "g"),
 			// ✅ If there is no year, just the author
-			new RegExp(`©\\s+${conf.from.Author}`, "g")
+			new RegExp(`©\\s+${conf.from.Author}`, "g"),
+			// ✅ WordPress style.css replacements
+			new RegExp(`(Theme Name:\\s+).*`, "g"),
+			new RegExp(`(Author:\\s+).*`, "g"),
+			new RegExp(`(Author URI:\\s+).*`, "g"),
+			new RegExp(`(Description:\\s+).*`, "g"),
+			new RegExp(`(Version:\\s+).*`, "g"),
+			new RegExp(`(License:\\s+).*`, "g"),
+			new RegExp(`(License URI:\\s+).*`, "g"),
+			new RegExp(`(Text Domain:\\s+).*`, "g")
 		],
 		to: [
 			// ✅ Namespace Replacement
@@ -74,7 +84,16 @@ const doReplacePhp = async (conf, ignoreFile) => {
 			// ✅ Copyright Replacement
 			`${padRight("@copyright", maxTagLength)} ${conf.to.Year} ${conf.from.Author}`,
 			`© ${conf.to.Year} ${conf.from.Author}`,
-			`© ${conf.to.Year} ${conf.from.Author}`
+			`© ${conf.to.Year} ${conf.from.Author}`,
+			// ✅ WordPress style.css replacements
+			`Theme Name: ${casex(conf.to.Name, 'CaSe')}`,
+			`Author: ${conf.to.Author}`,
+			`Author URI: ${conf.to.AuthorUri}`,
+			`Description: ${conf.to.Description}`,
+			`Version: 1.0.0`,
+			`License: GNU General Public License v2 or later`,
+			`License URI: https://www.gnu.org/licenses/gpl-2.0.html`,
+			`Text Domain: ${casex(conf.to.Name, 'ca-se').toLowerCase()}`
 		]
 	};
 };
