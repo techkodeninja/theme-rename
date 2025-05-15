@@ -1,6 +1,6 @@
 {
     "name": "theme-rename",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "CLI tool for renaming WordPress themes across all files and configurations.",
     "main": "index.mjs",
     "type": "module",
