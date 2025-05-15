@@ -18,6 +18,7 @@ const doReplacePhp = async (conf, ignoreFile) => {
 			`${themeRoot}/**/*.php`,
 			`${themeRoot}/*.js`,                // ✅ Root level .js files (like webpack.mix.js)
 			`${themeRoot}/webpack.*.js`,        // ✅ webpack.*.js specifically
+			`${themeRoot}/public/views/**/*.php` // ✅ Re-including public/views
 		],
 		from: [
 			// ✅ Namespace Replacement
@@ -70,14 +71,15 @@ const doReplaceAssets = async (conf, ignoreFile) => {
 			"vendor/**/*",
 			"node_modules/**/*",
 			".git/**/*",
-			"public/views/**/*",    // ✅ Ignoring public/views directory
 			ignoreFile
 		],
 		files: [
 			`${themeRoot}/**/*.js`,
 			`${themeRoot}/**/*.scss`,
 			`${themeRoot}/webpack.*.js`,       // ✅ webpack.*.js specifically
-			`${themeRoot}/*.js`                // ✅ Root-level JS files
+			`${themeRoot}/*.js`,               // ✅ Root-level JS files
+			`${themeRoot}/public/views/**/*.js`, // ✅ JS files in public/views
+			`${themeRoot}/public/views/**/*.scss` // ✅ SCSS files in public/views
 		],
 		from: [
 			// ✅ Author Information
