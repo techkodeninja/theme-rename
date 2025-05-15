@@ -12,7 +12,6 @@ const doReplacePhp = async (conf, ignoreFile) => {
 			"vendor/**/*",
 			"node_modules/**/*",
 			".git/**/*",
-			"public/views/**/*",    // ✅ Ignoring public/views directory
 			ignoreFile
 		],
 		files: [
