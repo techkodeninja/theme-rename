@@ -5,10 +5,20 @@ import path from "path";
 const themeRoot = process.cwd();
 
 /**
- * Inserts three spaces between each word in the Name.
- * Example: "Superman Theme" → "Superman   Theme"
+ * Right-aligns the tag to match the longest one (e.g., `@copyright`)
  */
-const spacedName = (name) => name.split(' ').join('   ');
+const padRight = (tag, maxLength) => tag.padEnd(maxLength);
+
+/**
+ * Maximum length for alignment (`@license` is the longest here)
+ */
+const maxTagLength = Math.max(
+	"@package".length,
+	"@author".length,
+	"@copyright".length,
+	"@license".length,
+	"@link".length
+);
 
 const doReplacePhp = async (conf, ignoreFile) => {
 	return {
@@ -28,7 +38,7 @@ const doReplacePhp = async (conf, ignoreFile) => {
 		from: [
 			// ✅ Namespace Replacement
 			new RegExp(`namespace ${casex(conf.from.Name, 'CaSe')}`, "g"),
-			// ✅ Package Replacement (now handles any spaces)
+			// ✅ Package Replacement (align with other tags)
 			new RegExp(`(@package\\s+)(\\s*)${casex(conf.from.Name, 'CaSe')}`, "g"),
 			// ✅ Variable Replacement
 			new RegExp(`\\$${casex(conf.from.Name.toLowerCase(), 'ca_se')}`, "g"),
@@ -49,8 +59,8 @@ const doReplacePhp = async (conf, ignoreFile) => {
 		to: [
 			// ✅ Namespace Replacement
 			`namespace ${casex(conf.to.Name, 'CaSe')}`,
-			// ✅ Package Replacement with 3 spaces
-			`@package      ${spacedName(conf.to.Name)}`,  // <-- 3 fixed spaces before the name
+			// ✅ Package Replacement with alignment
+			`${padRight("@package", maxTagLength)} ${casex(conf.to.Name, 'CaSe')}`,
 			// ✅ Variable Replacement
 			`\$${casex(conf.to.Name.toLowerCase(), 'ca_se')}`,
 			// ✅ Path Replacement
@@ -62,7 +72,7 @@ const doReplacePhp = async (conf, ignoreFile) => {
 			conf.to.AuthorEmail,
 			conf.to.Author,
 			// ✅ Copyright Replacement
-			`@copyright ${conf.to.Year} ${conf.from.Author}`,
+			`${padRight("@copyright", maxTagLength)} ${conf.to.Year} ${conf.from.Author}`,
 			`© ${conf.to.Year} ${conf.from.Author}`,
 			`© ${conf.to.Year} ${conf.from.Author}`
 		]
