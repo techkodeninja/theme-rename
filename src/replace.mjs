@@ -94,12 +94,12 @@ const doReplaceStyleCss = async (conf) => {
 			new RegExp(`(Text Domain:\\s+).*`, "g")
 		],
 		to: [
-			`Theme Name:     ${casex(conf.to.Name, 'CaSe')}`,
-			`Theme URI:      ${conf.to.Uri}`,
-			`Author:         ${conf.to.Author}`,
-			`Author URI:     ${conf.to.AuthorUri}`,
-			`Description:    ${conf.to.Description}`,
-			`Text Domain:    ${casex(conf.to.Name, 'ca-se').toLowerCase()}`
+			`Theme Name:   ${casex(conf.to.Name, 'CaSe')}`,
+			`Theme URI:    ${conf.to.Uri}`,
+			`Author:       ${conf.to.Author}`,
+			`Author URI:   ${conf.to.AuthorUri}`,
+			`Description:  ${conf.to.Description}`,
+			`Text Domain:  ${casex(conf.to.Name, 'ca-se').toLowerCase()}`
 		]
 	};
 };
