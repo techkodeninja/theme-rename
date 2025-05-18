@@ -20,6 +20,9 @@ const maxTagLength = Math.max(
 	"@author".length
 );
 
+/**
+ * Handles replacement for PHP, JS, and Webpack files.
+ */
 const doReplacePhp = async ( conf, ignoreFile ) => {
 	return {
 		allowEmptyPaths : true,
@@ -61,7 +64,10 @@ const doReplacePhp = async ( conf, ignoreFile ) => {
 			new RegExp( `©\\s+([0-9]{4})\\s+${conf.from.Author}`, "g" ),
 
 			// ✅ If there is no year, just the author
-			new RegExp( `©\\s+${conf.from.Author}`, "g" )
+			new RegExp( `©\\s+${conf.from.Author}`, "g" ),
+
+			// ✅ **Text Domain Replacement** in load_theme_textdomain, load_plugin_textdomain, and translation functions
+			new RegExp( `(['"])${casex( conf.from.Name.toLowerCase(), 'ca-se' )}(['"])`, "g" )
 		],
 		to : [
 			// ✅ Namespace Replacement
@@ -87,11 +93,17 @@ const doReplacePhp = async ( conf, ignoreFile ) => {
 			// ✅ Copyright Replacement
 			`${padRight( "@copyright", maxTagLength )} ${conf.to.Year} ${conf.from.Author}`,
 			`© ${conf.to.Year} ${conf.from.Author}`,
-			`© ${conf.to.Year} ${conf.from.Author}`
+			`© ${conf.to.Year} ${conf.from.Author}`,
+
+			// ✅ **Text Domain Replacement**
+			`'${casex( conf.to.Name.toLowerCase(), 'ca-se' )}'`
 		]
 	};
 };
 
+/**
+ * Handles replacement for style.css.
+ */
 const doReplaceStyleCss = async ( conf ) => {
 	return {
 		allowEmptyPaths : true,
@@ -112,17 +124,22 @@ const doReplaceStyleCss = async ( conf ) => {
 			`Author:       ${conf.to.Author}`,
 			`Author URI:   ${conf.to.AuthorUri}`,
 			`Description:  ${conf.to.Description}`,
-			`Text Domain:  ${casex( conf.to.Name, 'ca-se' ).toLowerCase()}`
+			`Text Domain:  ${casex( conf.to.Name.toLowerCase(), 'ca-se' )}`
 		]
 	};
 };
 
+/**
+ * Main execution function to replace contents.
+ */
 export default async ( config, ignoreFile ) => {
-	const replacePhp     = await doReplacePhp( config, ignoreFile );
+	// ➡️ PHP, JS, and Webpack files
+	const replacePhp = await doReplacePhp( config, ignoreFile );
 	await replace( replacePhp );
 
+	// ➡️ CSS Header in style.css
 	const replaceStyleCss = await doReplaceStyleCss( config );
 	await replace( replaceStyleCss );
 
-	console.log( "\nAll Files Updated Successfully." );
+	console.log( "\n✅ All Files Updated Successfully." );
 };
