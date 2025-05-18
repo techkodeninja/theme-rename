@@ -1,6 +1,6 @@
 {
     "name": "theme-rename",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "CLI tool for renaming WordPress themes across all files and configurations.",
     "main": "index.mjs",
     "type": "module",
@@ -19,5 +19,8 @@
     "engines": {
         "node": ">=14"
     },
-    "enginesStrict": true
+    "enginesStrict": true,
+    "devDependencies": {
+        "theme-rename": "^0.0.2"
+    }
 }
