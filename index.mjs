@@ -1,42 +1,24 @@
-import fs          from "fs-extra";
-import chalk       from "chalk";
-import renameTheme from "./src/replace.mjs";
+import path from "node:path";
+import { loadConfig, validateConfig } from "./src/config.mjs";
+import { renameTheme } from "./src/replace.mjs";
 
-export default async ( config, ignoreFile = "**/*.ignore" ) => {
+export { loadConfig, validateConfig, renameTheme };
 
-	try {
-
-		// ✅ Directly read the configuration file
-		let newConf = await fs.readJson( config );
-
-		// ✅ Validate if `to` configuration exists
-		if ( !newConf.to ) {
-			console.error( chalk.red( "\n❌ Error: No 'to' configuration found in themerename.json\n" ) );
-			process.exit( 1 );
-		}
-
-		// ✅ Validate the required fields inside `to`
-		const requiredFields = [ "Name", "Uri", "Description" ];
-		for ( const field of requiredFields ) {
-			if ( !newConf.to[field] ) {
-				console.error( chalk.red( `\n❌ Error: Missing required field '${field}' in 'to' configuration.\n` ) );
-				process.exit( 1 );
-			}
-		}
-
-		// ✅ Log start process
-		console.log( chalk.green( "\n🚀 Starting Theme Replacement...\n" ) );
-
-		// ✅ Perform the replacement
-		await renameTheme( newConf, ignoreFile );
-
-		// ✅ Log completion
-		console.log( chalk.green( "\n🎉 Theme Renaming Completed Successfully!\n" ) );
-
-	} catch ( error ) {
-
-		console.error( chalk.red( "\n❌ Failed to process theme replacement:" ), error.message );
-		process.exit( 1 );
-
-	}
+/**
+ * Renames the theme that `configPath` (a themerename.json file) lives in.
+ * Throws on invalid config instead of exiting, so it can be used as a library.
+ *
+ * @param {string}  configPath
+ * @param {object}  [options]
+ * @param {string}  [options.root]   Theme root; defaults to the config's folder.
+ * @param {boolean} [options.dryRun] Report changes without writing.
+ * @returns {Promise<string[]>} Theme-relative paths of changed files.
+ */
+export default async ( configPath, { root, dryRun = false } = {} ) => {
+	const config = await loadConfig( configPath );
+	return renameTheme( {
+		root   : root ?? path.dirname( path.resolve( configPath ) ),
+		config,
+		dryRun
+	} );
 };
