@@ -1,26 +1,34 @@
 {
-    "name": "theme-rename",
-    "version": "0.0.3",
-    "description": "CLI tool for renaming WordPress themes across all files and configurations.",
-    "main": "index.mjs",
-    "type": "module",
-    "bin": {
-        "theme-rename": "./bin/cli.mjs"
-    },
-    "scripts": {
-        "rename-theme": "node ./bin/cli.mjs"
-    },
-    "dependencies": {
-        "casex": "^3.0.0",
-        "chalk": "^2.4.2",
-        "fs-extra": "^7.0.1",
-        "replace-in-file": "^3.4.3"
-    },
-    "engines": {
-        "node": ">=14"
-    },
-    "enginesStrict": true,
-    "devDependencies": {
-        "theme-rename": "^0.0.2"
-    }
+  "name": "theme-rename",
+  "version": "0.1.0",
+  "description": "CLI tool for renaming and rebranding ClassicPress themes across all files.",
+  "main": "index.mjs",
+  "exports": "./index.mjs",
+  "type": "module",
+  "bin": {
+    "theme-rename": "./bin/cli.mjs"
+  },
+  "files": [
+    "bin",
+    "src",
+    "index.mjs"
+  ],
+  "scripts": {
+    "rename-theme": "node ./bin/cli.mjs",
+    "test": "node --test"
+  },
+  "keywords": [
+    "classicpress",
+    "wordpress",
+    "theme",
+    "rename",
+    "cli"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/techkodeninja/theme-rename.git"
+  },
+  "engines": {
+    "node": ">=18.3"
+  }
 }
